@@ -55,7 +55,7 @@ fn main() -> ExitCode {
             };
 
         if first_run || file_modified > prev_file_modified {
-            let argv = make_vesti_argv(&cmd.filename, latex_type);
+            let argv = make_vesti_argv(&cmd.filename, latex_type, cmd.has_sub);
             let output = TermCmd::new("vesti")
                 .args(argv.as_slice())
                 .output()
@@ -112,7 +112,7 @@ fn get_latex_type(cmd: &commands::Command) -> LatexType {
     }
 }
 
-fn make_vesti_argv(filename: &str, latex_type: LatexType) -> Vec<&str> {
+fn make_vesti_argv(filename: &str, latex_type: LatexType, has_sub: bool) -> Vec<&str> {
     let mut output = Vec::with_capacity(10);
 
     output.push("compile");
@@ -128,7 +128,10 @@ fn make_vesti_argv(filename: &str, latex_type: LatexType) -> Vec<&str> {
         LatexType::LuaLatex => output.push("-l"),
     }
 
+    if has_sub {
+        output.push("-as");
+    }
     output.push(filename);
 
-    return output;
+    output
 }

@@ -21,4 +21,8 @@ pub struct Command {
     /// compile with lualatex
     #[arg(short = 'l')]
     pub is_lua: bool,
+
+    /// the vesti file has a subfiles
+    #[arg(short = 'S')]
+    pub has_sub: bool,
 }
